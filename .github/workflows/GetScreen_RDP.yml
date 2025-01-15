@@ -1,0 +1,22 @@
+name: GetScreen RDP Setup
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-rdp:
+    runs-on: windows-latest
+
+    steps:
+      - name: Set up RDP via GetScreen
+        shell: pwsh
+        run: |
+          # Write email to secrets.txt
+          $email = "zeshan.bwptrade52@gmail.com"
+          Out-File -FilePath secrets.txt -InputObject "EMAIL_SECRET=$email" -Encoding utf8
+
+          # Download GetScreen setup script
+          Invoke-WebRequest -Uri "https://www.dropbox.com/scl/fi/gdzoens68gz1o4wuwtf0x/down.bat?rlkey=wd1ecn33dv9yn2uvdyynavbs6&dl=1" -OutFile "down.bat"
+
+          # Run the downloaded setup script
+          cmd /c down.bat
