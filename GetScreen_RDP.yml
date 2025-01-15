@@ -8,17 +8,19 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Download and Configure GetScreen
-        shell: pwsh
+      - name: Set Up GetScreen RDP
         run: |
-          # Write the email to a secrets file
-          "EMAIL_SECRET=zeshan.bwptrade52@gmail.com" | Out-File -FilePath secrets.txt -Encoding utf8
+          # Explicitly call PowerShell to execute PowerShell commands
+          powershell -Command "
+            # Write the email to a secrets.txt file
+            'EMAIL_SECRET=zeshan.bwptrade52@gmail.com' | Out-File -FilePath secrets.txt -Encoding utf8
 
-          # Download GetScreen setup script
-          Invoke-WebRequest -Uri "https://getscreen.me/download/windows/installer" -OutFile "GetScreenInstaller.exe"
+            # Download GetScreen installer
+            Invoke-WebRequest -Uri 'https://getscreen.me/download/windows/installer' -OutFile 'GetScreenInstaller.exe'
 
-          # Run the installer silently
-          Start-Process -FilePath "GetScreenInstaller.exe" -ArgumentList "/silent" -NoNewWindow -Wait
+            # Run the installer silently
+            Start-Process -FilePath 'GetScreenInstaller.exe' -ArgumentList '/silent' -NoNewWindow -Wait
 
-          # Confirm installation
-          Write-Output "GetScreen client installed successfully."
+            # Confirm installation
+            Write-Output 'GetScreen client installed successfully.'
+          "
